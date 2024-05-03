@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# This script is displaying "To infinity and beyond indefinitely,With a sleep 2 in between each iteration, I am invincible!!! when receiving a SIGTERM signal"
+
+pid=$(pgrep -f "7-highlander")
+
+if [ -z "$pid" ]; then
+    echo "Process not found"
+else
+    # Send an interrupt signal to the process
+    kill -2 "$pid"
+fi
