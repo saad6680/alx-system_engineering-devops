@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# This script is displaying  the PID
+
+# Get the list of directories in /proc that represent running processes
+for pid in /proc/[0-9]*/cmdline; do
+    pname=$(tr -d '\0' < "$pid")  # Extract the process name from the command line
+    if [[ $pname == *bash* ]]; then
+        pid=$(basename "$(dirname "$pid")")  # Get the PID from the directory path
+        echo "$pid $pname"
+    fi
+done
