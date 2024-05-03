@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# This script is displaying ines containing the bash word
+
+ps aux | grep bash | grep -v grep
+
+# shellcheck disable=SC2009
