@@ -1,0 +1,40 @@
+#!/bin/bash
+
+# Update hosts file location for Docker containers
+ETC_HOSTS=/run/hosts
+
+# Check if script is running inside Docker
+if [ ! -f "$ETC_HOSTS" ]; then
+  echo "Error: This script is designed to run inside a Docker container."
+  exit 1
+fi
+
+# Backup original hosts file (optional)
+cp "$ETC_HOSTS" "$ETC_HOSTS.bak"
+
+# Modify hosts file
+echo "127.0.0.2 localhost" >> "$ETC_HOSTS"
+echo "8.8.8.8 facebook.com" >> "$ETC_HOSTS"
+
+echo "Successfully modified hosts file."
+
+# Function to revert changes (optional)
+revert_changes() {
+  if [ -f "$ETC_HOSTS.bak" ]; then
+    cp "$ETC_HOSTS.bak" "$ETC_HOSTS"
+    echo "Reverted changes to hosts file."
+  else
+    echo "No backup found. Unable to revert changes."
+  fi
+}
+
+# Offer option to revert changes (optional)
+read -p "Would you like to revert changes to the hosts file (y/N)? " -n 1 -r
+echo
+
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+  revert_changes
+fi
+
+exit 0
+
